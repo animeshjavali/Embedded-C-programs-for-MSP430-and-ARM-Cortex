@@ -95,12 +95,9 @@ void SendByte(char ByteToSend, int IsData)
     // Now tell it to read them.
     //
     PulseLcm();
+
+
 }
-
-
-
-// Routine Desc:
-
 // Set the position of the cursor on the screen
 
 void LcmSetCursorPosition(char Row, char Col)
@@ -123,11 +120,6 @@ void LcmSetCursorPosition(char Row, char Col)
 
     SendByte(0x80 | address, FALSE);
 }
-
-
-//
-// Routine Desc:
-//
 // Clear the screen data and return the
 // cursor to home position
 
@@ -139,11 +131,6 @@ void ClearLcmScreen()
     SendByte(0x01, FALSE);
     SendByte(0x02, FALSE);
 }
-
-
-//
-// Routine Desc:
-//
 // Initialize the LCM after power-up.
 //
 // Note: This routine must not be called twice on the
@@ -158,31 +145,22 @@ void InitializeLcm(void)
     //
     LCM_DIR |= LCM_PIN_MASK;
     LCM_OUT &= ~(LCM_PIN_MASK);
-
-
-    //
     // wait for the LCM to warm up and reach
     // active regions. Remember MSPs can power
     // up much faster than the LCM.
-    //
+    
     __delay_cycles(100000);
-
-
-    //
     // initialize the LCM module
     //
     // 1. Set 4-bit input
-    //
-    LCM_OUT &= ~LCM_PIN_RS;
-    LCM_OUT &= ~LCM_PIN_EN;
-
-    LCM_OUT = 0x20;
+LCM_OUT &= ~LCM_PIN_RS;
+LCM_OUT &= ~LCM_PIN_EN;
+LCM_OUT = 0x20;
     PulseLcm();
-
-    //
+  
     // set 4-bit input - second time.
     // (as reqd by the spec.)
-    //
+   
     SendByte(0x28, FALSE);
 
     //
@@ -196,10 +174,6 @@ void InitializeLcm(void)
     SendByte(0x06, FALSE);
 }
 
-
-//
-// Routine Desc
-//
 // Print a string of characters to the screen
 
 void convert_temp(char tempr)
