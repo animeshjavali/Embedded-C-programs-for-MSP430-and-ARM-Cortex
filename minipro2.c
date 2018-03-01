@@ -23,62 +23,25 @@ int temp;
 #define     FALSE                 0
 #define     TRUE                  1
 
-//
-// Routine Desc:
-//
-// This is the function that must be called
-// whenever the LCM needs to be told to
-// scan it's data bus.
-//
-// Parameters:
-//
-//     void.
-//
-// Return
-//
-//     void.
-//
 void PulseLcm()
 {
-    //
-    // pull EN bit low
-    //
-    LCM_OUT &= ~LCM_PIN_EN;
+   // pull EN bit low
+   LCM_OUT &= ~LCM_PIN_EN;
     __delay_cycles(200);
-
-    //
-    // pull EN bit high
-    //
+	// pull EN bit high
     LCM_OUT |= LCM_PIN_EN;
-    __delay_cycles(200);
-
-    //
-    // pull EN bit low again
-    //
-    LCM_OUT &= (~LCM_PIN_EN);
+   __delay_cycles(200);
+	// pull EN bit low again
+   LCM_OUT &= (~LCM_PIN_EN);
     __delay_cycles(200);
 }
 
-
-
-//
-// Routine Desc:
-//
-// Send a byte on the data bus in the 4 bit mode
-// This requires sending the data in two chunks.
-// The high nibble first and then the low nible
-//
 // Parameters:
 //
 //    ByteToSend - the single byte to send
 //
 //    IsData - set to TRUE if the byte is character data
 //                  FALSE if its a command
-//
-// Return
-//
-//     void.
-//
 
 void SendByte(char ByteToSend, int IsData)
 {
@@ -104,10 +67,9 @@ void SendByte(char ByteToSend, int IsData)
         LCM_OUT &= ~LCM_PIN_RS;
     }
 
-    //
-    // we've set up the input voltages to the LCM.
-    // Now tell it to read them.
-    //
+    // set up the input voltages to the LCM.
+  
+   
     PulseLcm();
      //
     // set Low Nibble (LN) -
@@ -136,21 +98,11 @@ void SendByte(char ByteToSend, int IsData)
 }
 
 
-//
+
 // Routine Desc:
-//
+
 // Set the position of the cursor on the screen
-//
-// Parameters:
-//
-//     Row - zero based row number
-//
-//     Col - zero based col number
-//
-// Return
-//
-//     void.
-//
+
 void LcmSetCursorPosition(char Row, char Col)
 {
     char address;
@@ -178,15 +130,7 @@ void LcmSetCursorPosition(char Row, char Col)
 //
 // Clear the screen data and return the
 // cursor to home position
-//
-// Parameters:
-//
-//    void.
-//
-// Return
-//
-//     void.
-//
+
 void ClearLcmScreen()
 {
     //
@@ -205,15 +149,7 @@ void ClearLcmScreen()
 // Note: This routine must not be called twice on the
 //           LCM. This is not so uncommon when the power
 //           for the MCU and LCM are separate.
-//
-// Parameters:
-//
-//    void.
-//
-// Return
-//
-//     void.
-//
+
 void InitializeLcm(void)
 {
     //
@@ -265,14 +201,6 @@ void InitializeLcm(void)
 // Routine Desc
 //
 // Print a string of characters to the screen
-//
-// Parameters:
-//
-//    Text - null terminated string of chars
-//
-// Returns
-//
-//     void.
 
 void convert_temp(char tempr)
 {
@@ -296,21 +224,8 @@ void PrintStr(char *Text)
         c++;
     }
 }
-
-
-//
-// Routine Desc
-//
 // main entry point to the sketch
-//
-// Parameters
-//
-//     void.
-//
-// Returns
-//
-//     void.
-//
+
 
 void main(void)
 {
