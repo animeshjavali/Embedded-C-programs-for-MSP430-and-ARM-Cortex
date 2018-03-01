@@ -89,22 +89,16 @@ void SendByte(char ByteToSend, int IsData)
     {
         LCM_OUT &= ~LCM_PIN_RS;
     }
-
-    //
     // we've set up the input voltages to the LCM.
     // Now tell it to read them.
     //
     PulseLcm();
-
-
 }
 // Set the position of the cursor on the screen
 
 void LcmSetCursorPosition(char Row, char Col)
 {
     char address;
-
-    //
     // construct address from (Row, Col) pair
     //
     if (Row == 0)
@@ -153,11 +147,10 @@ void InitializeLcm(void)
     // initialize the LCM module
     //
     // 1. Set 4-bit input
-LCM_OUT &= ~LCM_PIN_RS;
-LCM_OUT &= ~LCM_PIN_EN;
-LCM_OUT = 0x20;
+    LCM_OUT &= ~LCM_PIN_RS;
+    LCM_OUT &= ~LCM_PIN_EN;
+    LCM_OUT = 0x20;
     PulseLcm();
-  
     // set 4-bit input - second time.
     // (as reqd by the spec.)
    
@@ -199,28 +192,19 @@ void PrintStr(char *Text)
     }
 }
 // main entry point to the sketch
-
-
 void main(void)
 {
-	WDTCTL =WDT_ADLY_1000  ;
-    ADC10CTL1 = INCH_10 + ADC10DIV_3;         // Temp Sensor ADC10CLK/4
-      ADC10CTL0 = SREF_1 + ADC10SHT_3 + REFON + ADC10ON + ADC10IE;
-      __delay_cycles(100000);
-    InitializeLcm();
-
-    ClearLcmScreen();
-
-
-    while (1)
+       WDTCTL =WDT_ADLY_1000  ;
+       ADC10CTL1 = INCH_10 + ADC10DIV_3;         // Temp Sensor ADC10CLK/4
+       ADC10CTL0 = SREF_1 + ADC10SHT_3 + REFON + ADC10ON + ADC10IE;
+       __delay_cycles(100000);
+      InitializeLcm();
+      ClearLcmScreen();
+ while (1)
     {
-
-
-    	    ADC10CTL0 |= ENC + ADC10SC;             // Sampling and conversion start
-    	    __bis_SR_register(GIE);        // LPM0 with interrupts enabled
-
-
-    	    // oC = ((A10/1024)*1500mV)-986mV)*1/3.55mV = A10*423/1024 - 278
+           ADC10CTL0 |= ENC + ADC10SC; // Sampling and conversion start
+    	    __bis_SR_register(GIE); // LPM0 with interrupts enabled
+ // oC = ((A10/1024)*1500mV)-986mV)*1/3.55mV = A10*423/1024 - 278
     	    temp = ADC10MEM;
     	    IntDegC = ((temp - 673) * 423) / 1024;
     	    convert_temp(IntDegC);
@@ -228,7 +212,6 @@ void main(void)
             PrintStr(t);
        __delay_cycles(1000);
 }
-
 }
 #pragma vector=ADC10_VECTOR
 __interrupt void ADC10_ISR (void)
